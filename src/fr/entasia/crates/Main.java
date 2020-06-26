@@ -43,7 +43,6 @@ public class Main extends JavaPlugin {
 					String name = cs2.getString("name");
 					for(CrateType ct : crateTypes){
 						if(ct.name.equals(name)){
-							crateLocs.put(loc.getBlock(), ct);
 							break;
 						}
 					}
