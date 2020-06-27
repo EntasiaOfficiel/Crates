@@ -1,5 +1,6 @@
 package fr.entasia.crates;
 
+import fr.entasia.apis.other.Randomiser;
 import fr.entasia.crates.utils.CrateType;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -10,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Set;
 
 public class Main extends JavaPlugin {
@@ -17,6 +19,8 @@ public class Main extends JavaPlugin {
 	public static Main inst;
     public static ArrayList<CrateType> crateTypes = new ArrayList<>();
     public static HashMap<Block, CrateType> crateLocs = new HashMap<>();
+
+    public static Random r = new Random();
 
 
 	@Override
