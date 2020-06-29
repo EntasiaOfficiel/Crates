@@ -1,2 +1,7 @@
 main: fr.entasia.crates.Main
+name: Crates
+version: '1.0'
 softdepend: [Multiverse-Core]
+depend: [Libraries]
+commands:
+  crates:
