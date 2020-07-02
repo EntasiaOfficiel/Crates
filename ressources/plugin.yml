@@ -5,3 +5,4 @@ softdepend: [Multiverse-Core]
 depend: [Libraries]
 commands:
   crates:
+    aliases: [crate]

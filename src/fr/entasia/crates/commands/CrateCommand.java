@@ -3,12 +3,15 @@ package fr.entasia.crates.commands;
 import fr.entasia.crates.CratesAPI;
 import fr.entasia.crates.utils.CrateType;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Map;
 import java.util.Set;
 
 public class CrateCommand implements CommandExecutor {
@@ -30,12 +33,11 @@ public class CrateCommand implements CommandExecutor {
                         else{
                             for(CrateType ct : CratesAPI.crateTypes){
                                 if(ct.name.equals(args[1])){
-                                    System.out.println(ct.name);
-                                    System.out.println(args[1]);
-                                    // TODO CREER LA CRATE
+
                                     Block block = p.getTargetBlock((Set<Material>) null, 20);
                                     if(ct.block.equals(block.getType())){
-                                        CratesAPI.crateLocs.put(block, ct);
+
+                                        CratesAPI.createCrate(p,block,ct);
 
                                     }else{
                                         p.sendMessage("§cLe bloc n'est pas de bon type pour la crate");
@@ -49,7 +51,12 @@ public class CrateCommand implements CommandExecutor {
                         }
                        break;
                     case "list":
-                        // TODO LISTER LES CRATES
+                        p.sendMessage("§7Liste des crates :");
+                        for(Map.Entry<Block,CrateType> entry: CratesAPI.crateLocs.entrySet()){
+                            Location loc = entry.getKey().getLocation();
+                            String coords = loc.getX() +";"+loc.getY()+";"+loc.getZ();
+                            p.sendMessage("§7Crate "+entry.getValue().name + ": "+coords);
+                        }
                         break;
                     default:
                         sender.sendMessage("§cArgument "+args[0]+" invalide !");

@@ -10,13 +10,10 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.List;
+import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 public class Main extends JavaPlugin {
 
@@ -61,7 +58,7 @@ public class Main extends JavaPlugin {
 			saveDefaultConfig();
 			main = this;
 			getLogger().info("Plugin de crates acivé ");
-            ConfigurationSection cs = getConfig().getConfigurationSection("cratelocs");
+            ConfigurationSection cs = getConfig().getConfigurationSection("crateslocs");
 			if(cs==null) {
 				getLogger().warning("Aucune crate dans la configuration !");
 			} else{
@@ -70,7 +67,7 @@ public class Main extends JavaPlugin {
 				Block b;
 				ConfigurationSection cs2;
 				for(String s : cs.getKeys(false)){
-					cs2 = getConfig().getConfigurationSection("cratelocs."+s);
+					cs2 = getConfig().getConfigurationSection("crateslocs."+s);
 					w = Bukkit.getWorld(cs2.getString("world"));
 					loc = new Location(w, cs2.getInt("x")+0.5, cs2.getInt("y")+0.2, cs2.getInt("z")+0.5);
 					if(w==null){
