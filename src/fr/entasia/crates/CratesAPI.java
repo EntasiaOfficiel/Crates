@@ -41,9 +41,6 @@ public class CratesAPI {
 			} else{
 				Main.main.getConfig().createSection("crateslocs");
 			}
-
-
-
 			String path = "crateslocs."+crateNumber+".";
 			Main.main.getConfig().set(path+"x",x);
 			Main.main.getConfig().set(path+"y",y);

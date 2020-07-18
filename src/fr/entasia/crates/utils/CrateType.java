@@ -1,6 +1,7 @@
 package fr.entasia.crates.utils;
 
 import fr.entasia.apis.other.ItemBuilder;
+import fr.entasia.apis.other.Randomiser;
 import fr.entasia.crates.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -38,7 +39,7 @@ public class CrateType {
 	}
 
 
-	public ArrayList<CrateLoot> loots = new ArrayList<>();
+	public static ArrayList<CrateLoot> loots = new ArrayList<>();
 	public String name;
 	public ItemStack key;
 
@@ -133,7 +134,17 @@ public class CrateType {
 		}
 
 
+		Prize closestPrize = null;
+		Randomiser r = new Randomiser();
+		for(Prize p : armorStands){
+			if(r.isInNext(p.loot.chance)){
+				closestPrize = p;
+				break;
+			}
+		}
+
 		ArmorStand finalPointer = pointer;
+		Prize finalClosestPrize = closestPrize;
 		new BukkitRunnable() {
 			final double max = Main.r.nextInt(20*2) + 20*6;
 			int time = 0;
@@ -141,7 +152,8 @@ public class CrateType {
 			boolean end = false;
 			boolean wait = false;
 
-			Prize closestPrize = null;
+
+
 			double closestIndex = 0;
 
 			@Override
@@ -165,13 +177,13 @@ public class CrateType {
 
 
 				}else if(end){ //derniers déplacements
-					double tFinal = closestPrize.angle - t1;
+					double tFinal = finalClosestPrize.angle - t1;
 					if(tFinal%(Math.PI*2)<=1){
 
-						player.sendMessage("§7Tu as gagné " + closestPrize.loot.name);
+						player.sendMessage("§7Tu as gagné " + finalClosestPrize.loot.name);
 
 						wait=true;
-						closestPrize.loot.win(player);
+						finalClosestPrize.loot.win(player);
 						time=0;
 
 						return;
@@ -180,19 +192,9 @@ public class CrateType {
 					System.out.println("fin");
 					System.out.println(period);
 					period = 6;
-					for(Prize prize : armorStands){
-
-						double tFinal = prize.angle - t1;
-
-
-						if(tFinal%(Math.PI*2) > closestIndex){
-
-							closestIndex = tFinal%(Math.PI*2);
-							closestPrize = prize;
-						}
-
-					}
-					if(closestPrize==null){
+					double tFinal = finalClosestPrize.angle - t1;
+					closestIndex= tFinal%(Math.PI*2);
+					if(finalClosestPrize ==null){
 						player.sendMessage("§cErreur , veuillez contacter un membre du staff !");
 						cancel();
 						return;

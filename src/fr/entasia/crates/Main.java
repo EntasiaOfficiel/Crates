@@ -25,15 +25,15 @@ public class Main extends JavaPlugin {
     static{
 		CrateType crateVote = new CrateType();
 		crateVote.block = Material.CHEST;
-		CrateLoot loot1 =new CrateLoot(20, new ItemBuilder(Material.IRON_SWORD).build());
+		CrateLoot loot1 =new CrateLoot(80, new ItemBuilder(Material.IRON_SWORD).build());
 		loot1.name = "Loot 1";
-		CrateLoot loot2 =new CrateLoot(20, new ItemBuilder(Material.WOOD_SWORD).build());
+		CrateLoot loot2 =new CrateLoot(5, new ItemBuilder(Material.WOOD_SWORD).build());
 		loot2.name = "Loot 2";
-		CrateLoot loot3 =new CrateLoot(20, new ItemBuilder(Material.GOLD_SWORD).build());
+		CrateLoot loot3 =new CrateLoot(5, new ItemBuilder(Material.GOLD_SWORD).build());
 		loot3.name = "Loot 3";
-		CrateLoot loot4 =new CrateLoot(20, new ItemBuilder(Material.IRON_SWORD).build());
+		CrateLoot loot4 =new CrateLoot(5, new ItemBuilder(Material.IRON_SPADE).build());
 		loot4.name = "Loot 4";
-		CrateLoot loot5 =new CrateLoot(20, new ItemBuilder(Material.DIAMOND_SWORD).build());
+		CrateLoot loot5 =new CrateLoot(5, new ItemBuilder(Material.DIAMOND_SWORD).build());
 		loot5.name = "Loot 5";
 		crateVote.loots.add(loot1);
 		crateVote.loots.add(loot2);
