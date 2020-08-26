@@ -12,17 +12,16 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Map;
 import java.util.Random;
 
 public class Main extends JavaPlugin {
 
 	public static Main main;
 
-    public static Random r = new Random();
+	public static Random r = new Random();
 
 
-    static{
+	static{
 		CrateType crateVote = new CrateType();
 		crateVote.block = Material.CHEST;
 		CrateLoot loot1 =new CrateLoot(80, new ItemBuilder(Material.IRON_SWORD).build());
@@ -46,19 +45,15 @@ public class Main extends JavaPlugin {
 
 
 
-    }
+	}
 
 
 	@Override
 	public void onEnable() {
-		getCommand("crates").setExecutor(new CrateCommand());
-
-		getServer().getPluginManager().registerEvents(new Listeners(),this);
 		try{
-			saveDefaultConfig();
 			main = this;
-			getLogger().info("Plugin de crates acivé ");
-            ConfigurationSection cs = getConfig().getConfigurationSection("crateslocs");
+			saveDefaultConfig();
+			ConfigurationSection cs = getConfig().getConfigurationSection("crateslocs");
 			if(cs==null) {
 				getLogger().warning("Aucune crate dans la configuration !");
 			} else{
@@ -94,10 +89,14 @@ public class Main extends JavaPlugin {
 			}
 
 
+			getCommand("crates").setExecutor(new CrateCommand());
 
+			getServer().getPluginManager().registerEvents(new Listeners(),this);
+
+			getLogger().info("Plugin de crates activé !");
 		}catch(Throwable e){
 			e.printStackTrace();
-			getLogger().severe("LE SERVEUR VA S'ETEINDRE !");
+			getLogger().severe("Une erreur est survenue ! LE SERVEUR VA S'ETEINDRE");
 			getServer().shutdown();
 		}
 	}

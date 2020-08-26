@@ -1,13 +1,10 @@
 package fr.entasia.crates.utils;
 
-import fr.entasia.apis.other.ItemBuilder;
 import fr.entasia.apis.other.Randomiser;
 import fr.entasia.crates.Main;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -39,21 +36,13 @@ public class CrateType {
 	}
 
 
-	public static ArrayList<CrateLoot> loots = new ArrayList<>();
+	public ArrayList<CrateLoot> loots = new ArrayList<>();
 	public String name;
 	public ItemStack key;
 
 	public boolean canOpen(Player p){
 		ItemStack item = p.getInventory().getItemInMainHand();
-		if(item.hasItemMeta() && item.getItemMeta().getDisplayName()!=null){
-			if(key.hasItemMeta() && key.getItemMeta().getDisplayName()!= null){
-				return item.getType().equals(key.getType()) && item.getItemMeta().getDisplayName().equals(key.getItemMeta().getDisplayName());
-			}
-			return false;
-		} else{
-			return item.getType().equals(key.getType());
-		}
-
+		return item.isSimilar(key);
 	}
 
 	public void open(Block block, Player player){
@@ -61,7 +50,7 @@ public class CrateType {
 		DirectionalContainer chest = (DirectionalContainer) block.getState().getData();
 		Location centerLoc = block.getLocation().add(0.5, 0, 0.5);
 		Location pointerLoc = centerLoc.clone();
-		ArmorStand pointer = null;
+		ArmorStand pointer;
 
 		double t1;
 		switch(chest.getFacing()){
@@ -106,7 +95,7 @@ public class CrateType {
 		asd.setItemInHand(new ItemStack(Material.STICK));
 		asd.setInvulnerable(true);
 		asd.setCanPickupItems(false);
-		pointer=asd;
+		pointer = asd;
 		asd.setVisible(false);
 		asd.setInvulnerable(true);
 

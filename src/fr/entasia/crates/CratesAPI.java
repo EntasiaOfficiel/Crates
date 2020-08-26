@@ -33,13 +33,11 @@ public class CratesAPI {
 			double x = loc.getX();
 			double y = loc.getY();
 			double z= loc.getZ();
-			int crateNumber =1;
-			if(cs!=null){
-				for(String string : cs.getKeys(false)){
-					crateNumber++;
-				}
-			} else{
+			int crateNumber = 1;
+			if(cs==null){
 				Main.main.getConfig().createSection("crateslocs");
+			} else{
+				crateNumber += cs.getKeys(false).size();
 			}
 			String path = "crateslocs."+crateNumber+".";
 			Main.main.getConfig().set(path+"x",x);
@@ -48,7 +46,7 @@ public class CratesAPI {
 			Main.main.getConfig().set(path+"world",w.getName());
 			Main.main.getConfig().set(path+"type",ct.name);
 			Main.main.saveConfig();
-			p.sendMessage("§7Vous avez bien créé(e) la crate "+ct.name);
+			p.sendMessage("§aTu as bien posé une crate §2"+ct.name+"§a !");
 
 		}
 	}
