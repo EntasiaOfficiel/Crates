@@ -8,6 +8,7 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -50,4 +51,13 @@ public class CratesAPI {
 
 		}
 	}
+
+	@Nullable
+	public static CrateType getCrateType(String name){
+		for(CrateType ct : crateTypes){
+			if(ct.name.equals(name))return ct;
+		}
+		return null;
+	}
+
 }

@@ -1,10 +1,12 @@
 package fr.entasia.crates.utils;
 
 import fr.entasia.apis.other.Randomiser;
+import fr.entasia.apis.utils.ItemUtils;
 import fr.entasia.crates.Main;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftEntity;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -27,7 +29,6 @@ public class CrateType {
 		public ArmorStand am;
 		public CrateLoot loot;
 		public double angle;
-//		public int p;
 
 		public Prize(Entity ent){
 			this.am = (ArmorStand) ent;
@@ -40,42 +41,53 @@ public class CrateType {
 	public String name;
 	public ItemStack key;
 
-	public boolean canOpen(Player p){
+	public boolean removeKey(Player p){
 		ItemStack item = p.getInventory().getItemInMainHand();
-		return item.isSimilar(key);
+		if(item.isSimilar(key)){
+			item.setAmount(item.getAmount()-1);
+			return true;
+		}else return false;
 	}
 
 	public void open(Block block, Player player){
+
 		block.setMetadata("opening", new FixedMetadataValue(Main.main, true));
+		String name;
+		for(ArmorStand as : block.getLocation().getNearbyEntitiesByType(ArmorStand.class, 3)){
+			name = as.getCustomName();
+			if("AMPointer".equals(name)||"AMPrize".equals(name)){
+				as.remove();
+			}
+		}
+
 		DirectionalContainer chest = (DirectionalContainer) block.getState().getData();
 		Location centerLoc = block.getLocation().add(0.5, 0, 0.5);
 		Location pointerLoc = centerLoc.clone();
-		ArmorStand pointer;
 
-		double t1;
+		double baseAngle;
 		switch(chest.getFacing()){
 			case NORTH:{
 				pointerLoc.add(0,0,-2.5);
 				pointerLoc.setYaw(-90);
-				t1 = Math.toRadians(270);
+				baseAngle = Math.toRadians(270);
 				break;
 			}
 			case EAST:{
 				pointerLoc.add(2.5,0,0);
 				pointerLoc.setYaw(0);
-				t1=Math.toRadians(0);
+				baseAngle=Math.toRadians(0);
 				break;
 			}
 			case SOUTH:{
 				pointerLoc.add(0,0,2.5);
 				pointerLoc.setYaw(90);
-				t1 = Math.toRadians(90);
+				baseAngle = Math.toRadians(90);
 				break;
 			}
 			case WEST:{
 				pointerLoc.add(-2.5,0,0);
 				pointerLoc.setYaw(180);
-				t1 = Math.toRadians(180);
+				baseAngle = Math.toRadians(180);
 				break;
 			}
 			default:{
@@ -83,21 +95,21 @@ public class CrateType {
 			}
 		}
 
-		ArmorStand asd = (ArmorStand) pointerLoc.getWorld().spawnEntity(pointerLoc, EntityType.ARMOR_STAND);
-		asd.setCustomName("AMPointer");
-		asd.setHeadPose(translate(0, 0, 0));
-		asd.setArms(true);
-		asd.setSmall(true);
-		asd.setBasePlate(false);
-		asd.setGravity(false);
+		ArmorStand pointer = (ArmorStand) pointerLoc.getWorld().spawnEntity(pointerLoc, EntityType.ARMOR_STAND);
+		pointer.setCustomName("AMPointer");
+		pointer.setHeadPose(translate(0, 0, 0));
+		pointer.setArms(true);
+		pointer.setSmall(true);
+		pointer.setBasePlate(false);
+		pointer.setGravity(false);
 
-		asd.setRightArmPose(translate(-10,90,90));
-		asd.setItemInHand(new ItemStack(Material.STICK));
-		asd.setInvulnerable(true);
-		asd.setCanPickupItems(false);
-		pointer = asd;
-		asd.setVisible(false);
-		asd.setInvulnerable(true);
+		pointer.setRightArmPose(translate(-10,90,90));
+		pointer.setItemInHand(new ItemStack(Material.STICK));
+		pointer.setInvulnerable(true);
+		pointer.setCanPickupItems(false);
+
+		pointer.setVisible(false);
+		pointer.setInvulnerable(true);
 
 		final Prize[] armorStands = new Prize[loots.size()];
 		int j = Main.r.nextInt(loots.size());
@@ -108,7 +120,7 @@ public class CrateType {
 			Prize p = new Prize(centerLoc.getWorld().spawnEntity(pointerLoc, EntityType.ARMOR_STAND));
 			p.am.setCustomName("AMPrize");
 			p.loot = loots.get(j);
-			p.angle=t1+slice*i;
+			p.angle=baseAngle+slice*i;
 			p.am.setItemInHand(p.loot.item);
 			p.am.setArms(true);
 			p.am.setInvulnerable(true);
@@ -119,31 +131,33 @@ public class CrateType {
 			armorStands[i] = p;
 			j++;
 			if(j==loots.size())j=0;
-
 		}
 
 
-		Prize closestPrize = null;
+		Prize temp = null;
 		Randomiser r = new Randomiser();
 		for(Prize p : armorStands){
 			if(r.isInNext(p.loot.chance)){
-				closestPrize = p;
+				temp = p;
 				break;
 			}
 		}
+		if(temp ==null){
+			player.sendMessage("§cUne erreur s'est produite ! Contacte un membre du Staff !");
+			return;
+		}
 
-		ArmorStand finalPointer = pointer;
-		Prize finalClosestPrize = closestPrize;
+		Prize closestPrize = temp;
 		new BukkitRunnable() {
 			final double max = Main.r.nextInt(20*2) + 20*6;
 			int time = 0;
 			int period = 1;
-			boolean end = false;
-			boolean wait = false;
-
-
-
-			double closestIndex = 0;
+			byte mode = 0;
+			/*
+			0 - normal
+			1 - end
+			2 - wait
+			 */
 
 			@Override
 			public void run() {
@@ -152,63 +166,48 @@ public class CrateType {
 				if(time%period!=0)return; // ralentissement de l'animation
 
 
-				if(wait){
+				if(mode==2){
 					if(time>40){
 						cancel();
 						for(Prize prize : armorStands){
 							prize.am.remove();
 						}
-						finalPointer.remove();
-						block.setMetadata("opening", new FixedMetadataValue(Main.main, false));
-						return;
+						pointer.remove();
+						block.removeMetadata("opening", Main.main);
 					}
-					return;
+				}else {
+					if (mode == 1) { //derniers déplacements
+						double tFinal = closestPrize.angle - baseAngle;
+						if (tFinal % (Math.PI * 2) <= 1) {
 
+							player.sendMessage("§aFin du tirage !");
 
-				}else if(end){ //derniers déplacements
-					double tFinal = finalClosestPrize.angle - t1;
-					if(tFinal%(Math.PI*2)<=1){
-
-						player.sendMessage("§7Tu as gagné " + finalClosestPrize.loot.name);
-
-						wait=true;
-						finalClosestPrize.loot.win(player);
-						time=0;
-
-						return;
+							mode = 2;
+							closestPrize.loot.win(player);
+							time = 0;
+						}
+					} else {
+						if (time > max) { // animation de base terminée
+							mode = 1;
+						} else if (time % 30 == 0 && period < 4) {
+							period++; //ralentissement de l'animation
+						}
 					}
-				}else if(time>max){ // animation de base terminée
-					System.out.println("fin");
-					System.out.println(period);
-					period = 6;
-					double tFinal = finalClosestPrize.angle - t1;
-					closestIndex= tFinal%(Math.PI*2);
-					if(finalClosestPrize ==null){
-						player.sendMessage("§cErreur , veuillez contacter un membre du staff !");
-						cancel();
-						return;
-					}
-					end = true;
 
-				}else if(time%30==0&&period<4){
-					System.out.println("update");
-					period++; //ralentissement de l'animation
+					Location loc;
+					for (Prize p : armorStands) {
+						loc = centerLoc.clone();
+
+						double x = 2 * Math.cos(p.angle);
+						double z = 2 * Math.sin(p.angle);
+						loc.add(x, 0, z);
+						p.am.teleport(loc);
+
+						p.angle += Math.PI * 2 / PLACES;
+
+
+					}
 				}
-
-				Location loc;
-				for(Prize p : armorStands){
-					loc = centerLoc.clone();
-
-					double x = 2*Math.cos(p.angle);
-					double z = 2*Math.sin(p.angle);
-					loc.add(x, 0, z);
-					p.am.teleport(loc);
-
-					p.angle+=Math.PI*2/PLACES;
-
-				}
-
-
 			}
 		}.runTaskTimer(Main.main, 0, 1);
 

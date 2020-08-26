@@ -1,7 +1,7 @@
 package fr.entasia.crates;
 
 import fr.entasia.apis.other.ItemBuilder;
-import fr.entasia.crates.commands.CrateCommand;
+import fr.entasia.crates.commands.CrateCmd;
 import fr.entasia.crates.utils.CrateLoot;
 import fr.entasia.crates.utils.CrateType;
 import org.bukkit.Bukkit;
@@ -89,7 +89,7 @@ public class Main extends JavaPlugin {
 			}
 
 
-			getCommand("crates").setExecutor(new CrateCommand());
+			getCommand("crates").setExecutor(new CrateCmd());
 
 			getServer().getPluginManager().registerEvents(new Listeners(),this);
 

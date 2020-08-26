@@ -3,7 +3,6 @@ package fr.entasia.crates.commands;
 import fr.entasia.crates.CratesAPI;
 import fr.entasia.crates.utils.CrateType;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,46 +10,60 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
-import java.util.Set;
 
-public class CrateCommand implements CommandExecutor {
+public class CrateCmd implements CommandExecutor {
 
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (!(sender instanceof Player)) return true;
 		Player p = (Player) sender;
-		if (!p.hasPermission("entasia.crate")) return true;
+		if (!p.hasPermission("admin.crates")) return true;
 		if (args.length == 0) {
 			p.sendMessage("§cMet un argument !");
 			args(sender);
 			return true;
 		}
 		switch (args[0]) {
-			case "add":
-			case "create":
+			case "create": {
 				if (args.length == 1) p.sendMessage("§cMet un nom de crate à créer !");
 				else {
-					for (CrateType ct : CratesAPI.crateTypes) {
-						if (ct.name.equals(args[1])) {
+					CrateType ct = CratesAPI.getCrateType(args[1]);
+					if (ct == null) {
+						p.sendMessage("§cCette crate n'existe pas !");
+					} else {
+						Block block = p.getTargetBlock(null, 20);
+						if (ct.block.equals(block.getType())) {
 
-							Block block = p.getTargetBlock((Set<Material>) null, 20);
-							if (ct.block.equals(block.getType())) {
+							CratesAPI.createCrate(p, block, ct);
 
-								CratesAPI.createCrate(p, block, ct);
-
-							} else {
-								p.sendMessage("§cLe bloc n'est pas de bon type pour la crate");
-							}
-
-							return true;
+						} else {
+							p.sendMessage("§cLe bloc n'est pas de bon type pour la crate");
 						}
 					}
-					p.sendMessage("§cAucune crate !");
-
 				}
 				break;
-			case "list":
+			}
+			case "key": {
+				if (args.length == 1) p.sendMessage("§cMet un nom de crate à créer !");
+				else {
+					CrateType ct = CratesAPI.getCrateType(args[1]);
+					if (ct == null) {
+						p.sendMessage("§cCette crate n'existe pas !");
+					} else {
+						p.getInventory().addItem(ct.key.clone());
+					}
+				}
+				break;
+			}
+			case "types":{
+				p.sendMessage("§7Liste des types de crate :");
+				for (CrateType type : CratesAPI.crateTypes) {
+					p.sendMessage("§7- "+type.name);
+				}
+				break;
+			}
+			case "list": {
 				p.sendMessage("§7Liste des crates :");
 				for (Map.Entry<Block, CrateType> entry : CratesAPI.crateLocs.entrySet()) {
 					Location loc = entry.getKey().getLocation();
@@ -58,12 +71,12 @@ public class CrateCommand implements CommandExecutor {
 					p.sendMessage("§7Crate " + entry.getValue().name + ": " + coords);
 				}
 				break;
-			default:
+			}
+			default:{
 				sender.sendMessage("§cArgument " + args[0] + " invalide !");
 				args(sender);
-
+			}
 		}
-
 		return true;
 	}
 

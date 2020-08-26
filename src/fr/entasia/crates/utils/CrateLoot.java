@@ -16,7 +16,7 @@ public class CrateLoot {
 	}
 
 	public void win(Player p){
-		ItemUtils.giveOrDrop(p,item);
+		ItemUtils.giveOrDrop(p, item);
 
 	};
 }
