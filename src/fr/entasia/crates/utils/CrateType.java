@@ -179,6 +179,7 @@ public class CrateType {
 					if (mode == 1) { //derniers déplacements
 						double tFinal = closestPrize.angle - baseAngle;
 						if (tFinal % (Math.PI * 2) <= 1) {
+							period = 5;
 
 							player.sendMessage("§aFin du tirage !");
 
@@ -189,7 +190,7 @@ public class CrateType {
 					} else {
 						if (time > max) { // animation de base terminée
 							mode = 1;
-						} else if (time % 30 == 0 && period < 4) {
+						} else if (time % 45 == 0 && period < 4) {
 							period++; //ralentissement de l'animation
 						}
 					}
