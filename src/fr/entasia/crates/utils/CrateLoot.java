@@ -10,13 +10,16 @@ public class CrateLoot {
 	public ItemStack item;
 	public String name;
 
-	public CrateLoot(int chance, ItemStack item){
+	public CrateLoot(){
+	}
+
+	public CrateLoot(int chance, String name, ItemStack item){
 		this.chance = chance;
+		this.name = name;
 		this.item = item;
 	}
 
 	public void win(Player p){
 		ItemUtils.giveOrDrop(p, item);
-
-	};
+	}
 }

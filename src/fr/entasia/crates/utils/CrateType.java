@@ -37,14 +37,19 @@ public class CrateType {
 	}
 
 
-	public ArrayList<CrateLoot> loots = new ArrayList<>();
+	protected ArrayList<CrateLoot> loots = new ArrayList<>();
+	public int maxPercent;
 	public String name;
 	public ItemStack key;
+
+	public void addLoot(CrateLoot loot){
+		loots.add(loot);
+	}
 
 	public boolean removeKey(Player p){
 		ItemStack item = p.getInventory().getItemInMainHand();
 		if(item.isSimilar(key)){
-			item.setAmount(item.getAmount()-1);
+			item.subtract();
 			return true;
 		}else return false;
 	}
@@ -211,8 +216,6 @@ public class CrateType {
 				}
 			}
 		}.runTaskTimer(Main.main, 0, 1);
-
-
 
 
 

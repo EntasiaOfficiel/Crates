@@ -20,34 +20,6 @@ public class Main extends JavaPlugin {
 
 	public static Random r = new Random();
 
-
-	static{
-		CrateType crateVote = new CrateType();
-		crateVote.block = Material.CHEST;
-		CrateLoot loot1 =new CrateLoot(80, new ItemBuilder(Material.IRON_SWORD).build());
-		loot1.name = "Loot 1";
-		CrateLoot loot2 =new CrateLoot(5, new ItemBuilder(Material.WOOD_SWORD).build());
-		loot2.name = "Loot 2";
-		CrateLoot loot3 =new CrateLoot(5, new ItemBuilder(Material.GOLD_SWORD).build());
-		loot3.name = "Loot 3";
-		CrateLoot loot4 =new CrateLoot(5, new ItemBuilder(Material.IRON_SPADE).build());
-		loot4.name = "Loot 4";
-		CrateLoot loot5 =new CrateLoot(5, new ItemBuilder(Material.DIAMOND_SWORD).build());
-		loot5.name = "Loot 5";
-		crateVote.loots.add(loot1);
-		crateVote.loots.add(loot2);
-		crateVote.loots.add(loot3);
-		crateVote.loots.add(loot4);
-		crateVote.loots.add(loot5);
-		crateVote.name = "vote";
-		crateVote.key = new ItemBuilder(Material.TRIPWIRE_HOOK).build();
-		CratesAPI.registerCrate(crateVote);
-
-
-
-	}
-
-
 	@Override
 	public void onEnable() {
 		try{
