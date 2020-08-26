@@ -24,13 +24,12 @@ public class Listeners implements Listener {
 			if(entry.getKey().equals(b)){
 				e.setCancelled(true);
 				CrateType crateType = entry.getValue();
-				if(crateType.removeKey(p)){
 					if(b.hasMetadata("opening")){
 						p.sendMessage("§cQuelqu'un est déjà en train d'ouvrir cette crate !");
 					}else{
-						crateType.open(b,p);
+						if(crateType.removeKey(p))crateType.open(b,p);
+						else p.sendMessage("§cTu n'as pas la clé pour ouvrir cette crate !");
 					}
-				}else p.sendMessage("§cTu ne peux pas ouvrir cette crate !");
 				return;
 			}
 		}
