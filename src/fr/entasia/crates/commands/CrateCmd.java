@@ -83,6 +83,8 @@ public class CrateCmd implements CommandExecutor {
 	private static void args(CommandSender sender){
 		sender.sendMessage("§cArguments disponibles :");
 		sender.sendMessage("§c- create");
+		sender.sendMessage("§c- key");
+		sender.sendMessage("§c- types");
 		sender.sendMessage("§c- list");
 		sender.sendMessage("§c- delete");
 	}
