@@ -6,12 +6,9 @@ import org.bukkit.inventory.ItemStack;
 
 public class CrateLoot {
 
-	public int chance;
-	public ItemStack item;
-	public String name;
-
-	public CrateLoot(){
-	}
+	protected int chance;
+	protected ItemStack item;
+	protected String name;
 
 	public CrateLoot(int chance, String name, ItemStack item){
 		this.chance = chance;
@@ -20,6 +17,7 @@ public class CrateLoot {
 	}
 
 	public void win(Player p){
+		p.sendMessage("§aTu as gagné "+name+" §a!");
 		ItemUtils.giveOrDrop(p, item);
 	}
 }

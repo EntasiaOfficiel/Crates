@@ -33,12 +33,14 @@ public class CrateCmd implements CommandExecutor {
 						p.sendMessage("§cCette crate n'existe pas !");
 					} else {
 						Block block = p.getTargetBlock(null, 20);
-						if (ct.block.equals(block.getType())) {
-
-							CratesAPI.createCrate(p, block, ct);
-
-						} else {
-							p.sendMessage("§cLe bloc n'est pas de bon type pour la crate");
+						if(block==null){
+							p.sendMessage("§cRegarde un block !");
+						}else{
+							if (ct.block.equals(block.getType())) {
+								CratesAPI.createCrate(p, block, ct);
+							} else {
+								p.sendMessage("§cLe bloc n'est pas de bon type pour la crate");
+							}
 						}
 					}
 				}
@@ -67,8 +69,8 @@ public class CrateCmd implements CommandExecutor {
 				p.sendMessage("§7Liste des crates :");
 				for (Map.Entry<Block, CrateType> entry : CratesAPI.crateLocs.entrySet()) {
 					Location loc = entry.getKey().getLocation();
-					String coords = loc.getX() + ";" + loc.getY() + ";" + loc.getZ();
-					p.sendMessage("§7Crate " + entry.getValue().name + ": " + coords);
+					String coords = loc.getBlockX() + "§8; §7" + loc.getBlockY() + "§8; §7" + loc.getBlockZ();
+					p.sendMessage("§7-" + entry.getValue().name + " §8:§7 " + coords+" §8(§7"+loc.getWorld().getName()+"§8)");
 				}
 				break;
 			}

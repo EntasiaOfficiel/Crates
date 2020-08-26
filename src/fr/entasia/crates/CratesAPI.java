@@ -17,8 +17,9 @@ public class CratesAPI {
 	public static ArrayList<CrateType> crateTypes = new ArrayList<>();
 	public static HashMap<Block, CrateType> crateLocs = new HashMap<>();
 
-	public static void registerCrate(CrateType ct){
+	public static void registerCrateType(CrateType ct){
 		if(Main.main ==null){
+			ct.name = ct.name.toLowerCase();
 			CratesAPI.crateTypes.add(ct);
 
 		}else throw new EntasiaException("Config already loaded ! Please add loadbefore: [Crates] in plugin.yml");

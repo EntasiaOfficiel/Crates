@@ -23,8 +23,9 @@ public class CrateType {
 
 	private static final int PLACES = 32;
 
-	public Material block;
-	public static class Prize{
+	public Material block = Material.CHEST;
+
+	static class Prize{
 
 		public ArmorStand am;
 		public CrateLoot loot;
@@ -44,6 +45,7 @@ public class CrateType {
 
 	public void addLoot(CrateLoot loot){
 		loots.add(loot);
+		maxPercent+=loot.chance;
 	}
 
 	public boolean removeKey(Player p){
@@ -140,7 +142,7 @@ public class CrateType {
 
 
 		Prize temp = null;
-		Randomiser r = new Randomiser();
+		Randomiser r = new Randomiser(maxPercent);
 		for(Prize p : armorStands){
 			if(r.isInNext(p.loot.chance)){
 				temp = p;
