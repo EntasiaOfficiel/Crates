@@ -46,6 +46,15 @@ public class CrateCmd implements CommandExecutor {
 				}
 				break;
 			}
+			case "delete": {
+				Block block = p.getTargetBlock(null, 20);
+				if(block==null){
+					p.sendMessage("§cRegarde un block !");
+				}else{
+					CratesAPI.deleteCrate(p,block);
+				}
+				break;
+			}
 			case "key": {
 				if (args.length == 1) p.sendMessage("§cMet un nom de crate à créer !");
 				else {

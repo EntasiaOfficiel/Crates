@@ -2,9 +2,11 @@ package fr.entasia.crates;
 
 import fr.entasia.crates.utils.CrateType;
 import fr.entasia.errors.EntasiaException;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
@@ -23,6 +25,33 @@ public class CratesAPI {
 			CratesAPI.crateTypes.add(ct);
 
 		}else throw new EntasiaException("Config already loaded ! Please add loadbefore: [Crates] in plugin.yml");
+	}
+
+
+	public static void deleteCrate(Player p,Block b){
+		ConfigurationSection cs = Main.main.getConfig().getConfigurationSection("crateslocs");
+		if(!crateLocs.containsKey(b)) p.sendMessage("§7Ce bloc n'est pas une crate");
+		else{
+			CratesAPI.crateLocs.remove(b);
+			Location loc=b.getLocation();
+			World w1 = loc.getWorld();
+			double x1 = loc.getX();
+			double y1 = loc.getY();
+			double z1= loc.getZ();
+			for(String s : cs.getKeys(false)){
+				String path = "crateslocs."+s+".";
+				double x = Main.main.getConfig().getInt(path+"x");
+				double y = Main.main.getConfig().getInt(path+"y");
+				double z = Main.main.getConfig().getInt(path+"z");
+				String w = Main.main.getConfig().getString(path+"world");
+				if(x==x1 && y==y1 && z==z1 && w.equalsIgnoreCase(w1.getName())){
+
+					cs.set(s,null);
+					Main.main.saveConfig();
+					p.sendMessage("§7Vous avez delete la crate");
+				}
+			}
+		}
 	}
 
 	public static void createCrate(Player p, Block b, CrateType ct){
