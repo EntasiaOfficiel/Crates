@@ -1,5 +1,7 @@
 package fr.entasia.crates;
 
+import fr.entasia.apis.menus.MenuCreator;
+import fr.entasia.crates.utils.CrateLoot;
 import fr.entasia.crates.utils.CrateType;
 import fr.entasia.errors.EntasiaException;
 import org.bukkit.Bukkit;
@@ -9,6 +11,7 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -90,4 +93,17 @@ public class CratesAPI {
 		return null;
 	}
 
+	public static void visualizeCrate(CrateType crateType,Player p) {
+		int loots = crateType.loots.size();
+		int slot = loots*2;
+		Inventory inv = Main.menu.createInv(slot, crateType.name);
+		int nextSlot=1;
+		for(CrateLoot loot : crateType.loots){
+			inv.setItem(nextSlot, loot.item);
+			nextSlot +=2;
+		}
+		p.openInventory(inv);
+
+
+	}
 }

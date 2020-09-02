@@ -6,6 +6,7 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -20,10 +21,14 @@ public class Listeners implements Listener {
 		if(e.getHand()!= EquipmentSlot.HAND)return;
 		Player p = e.getPlayer();
 		Block b = e.getClickedBlock();
+
 		for(Map.Entry<Block, CrateType> entry : CratesAPI.crateLocs.entrySet()){
 			if(entry.getKey().equals(b)) {
 				e.setCancelled(true);
 				CrateType crateType = entry.getValue();
+				if(e.getAction().equals(Action.LEFT_CLICK_BLOCK)){
+					CratesAPI.visualizeCrate(crateType,p);
+				}
 				if (b.hasMetadata("opening")) {
 					p.sendMessage("§cQuelqu'un est déjà en train d'ouvrir cette crate !");
 				} else {

@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 public class CrateLoot {
 
 	protected int chance;
-	protected ItemStack item;
+	public ItemStack item;
 	protected String name;
 
 	public CrateLoot(int chance, String name, ItemStack item){

@@ -23,7 +23,9 @@ public class CrateType {
 
 	public Material block = Material.CHEST;
 
-	static class Prize{
+
+
+	public static class Prize{
 
 		public ArmorStand am;
 		public CrateLoot loot;
@@ -36,7 +38,7 @@ public class CrateType {
 	}
 
 
-	protected ArrayList<CrateLoot> loots = new ArrayList<>();
+	public ArrayList<CrateLoot> loots = new ArrayList<>();
 	public int maxPercent;
 	public String name;
 	public ItemStack key;

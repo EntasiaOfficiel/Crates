@@ -1,5 +1,6 @@
 package fr.entasia.crates;
 
+import fr.entasia.apis.menus.MenuCreator;
 import fr.entasia.apis.other.ItemBuilder;
 import fr.entasia.crates.commands.CrateCmd;
 import fr.entasia.crates.utils.CrateLoot;
@@ -19,6 +20,9 @@ public class Main extends JavaPlugin {
 	public static Main main;
 
 	public static Random r = new Random();
+
+	public static MenuCreator menu = new MenuCreator();
+
 
 	@Override
 	public void onEnable() {
