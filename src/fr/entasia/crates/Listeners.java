@@ -28,6 +28,7 @@ public class Listeners implements Listener {
 				CrateType crateType = entry.getValue();
 				if(e.getAction().equals(Action.LEFT_CLICK_BLOCK)){
 					CratesAPI.visualizeCrate(crateType,p);
+					return;
 				}
 				if (b.hasMetadata("opening")) {
 					p.sendMessage("§cQuelqu'un est déjà en train d'ouvrir cette crate !");

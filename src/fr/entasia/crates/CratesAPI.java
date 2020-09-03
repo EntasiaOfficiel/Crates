@@ -96,11 +96,13 @@ public class CratesAPI {
 	public static void visualizeCrate(CrateType crateType,Player p) {
 		int loots = crateType.loots.size();
 		int slot = loots*2;
-		Inventory inv = Main.menu.createInv(slot, crateType.name);
-		int nextSlot=1;
+		slot = slot/9;
+
+		Inventory inv = Main.menu.createInv(slot, "§6Crate "+crateType.name);
+		int nextSlot=0;
 		for(CrateLoot loot : crateType.loots){
 			inv.setItem(nextSlot, loot.item);
-			nextSlot +=2;
+			nextSlot +=1;
 		}
 		p.openInventory(inv);
 
