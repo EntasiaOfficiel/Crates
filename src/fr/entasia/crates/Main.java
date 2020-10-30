@@ -1,13 +1,10 @@
 package fr.entasia.crates;
 
 import fr.entasia.apis.menus.MenuCreator;
-import fr.entasia.apis.other.ItemBuilder;
 import fr.entasia.crates.commands.CrateCmd;
-import fr.entasia.crates.utils.CrateLoot;
 import fr.entasia.crates.utils.CrateType;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
