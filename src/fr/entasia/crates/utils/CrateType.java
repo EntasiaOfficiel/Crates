@@ -1,5 +1,6 @@
 package fr.entasia.crates.utils;
 
+import com.google.common.net.HostAndPort;
 import fr.entasia.apis.other.Randomiser;
 import fr.entasia.crates.Main;
 import org.bukkit.Location;
@@ -9,7 +10,9 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Directional;
 import org.bukkit.material.DirectionalContainer;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -67,7 +70,7 @@ public class CrateType {
 			}
 		}
 
-		DirectionalContainer chest = (DirectionalContainer) block.getState().getData();
+		Directional chest = (Directional) block.getBlockData();
 		Location centerLoc = block.getLocation().add(0.5, 0, 0.5);
 		Location pointerLoc = centerLoc.clone();
 
@@ -111,7 +114,7 @@ public class CrateType {
 		pointer.setGravity(false);
 
 		pointer.setRightArmPose(translate(-10,90,90));
-		pointer.setItemInHand(new ItemStack(Material.STICK));
+		pointer.setItem(EquipmentSlot.HAND, new ItemStack(Material.STICK));
 		pointer.setInvulnerable(true);
 		pointer.setCanPickupItems(false);
 
@@ -128,7 +131,7 @@ public class CrateType {
 			p.am.setCustomName("AMPrize");
 			p.loot = loots.get(j);
 			p.angle=baseAngle+slice*i;
-			p.am.setItemInHand(p.loot.item);
+			p.am.setItem(EquipmentSlot.HAND, p.loot.item);
 			p.am.setArms(true);
 			p.am.setInvulnerable(true);
 			p.am.setVisible(false);

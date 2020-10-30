@@ -32,7 +32,7 @@ public class CrateCmd implements CommandExecutor {
 					if (ct == null) {
 						p.sendMessage("§cCette crate n'existe pas !");
 					} else {
-						Block block = p.getTargetBlock(null, 20);
+						Block block = p.getTargetBlock(20);
 						if(block==null){
 							p.sendMessage("§cRegarde un block !");
 						}else{
@@ -47,7 +47,7 @@ public class CrateCmd implements CommandExecutor {
 				break;
 			}
 			case "delete": {
-				Block block = p.getTargetBlock(null, 20);
+				Block block = p.getTargetBlock(20);
 				if(block==null){
 					p.sendMessage("§cRegarde un block !");
 				}else{

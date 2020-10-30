@@ -44,11 +44,11 @@ public class CratesAPI {
 				double y = Main.main.getConfig().getInt(path+"y");
 				double z = Main.main.getConfig().getInt(path+"z");
 				String w = Main.main.getConfig().getString(path+"world");
-				if(x==x1 && y==y1 && z==z1 && w.equalsIgnoreCase(w1.getName())){
+				if(x==x1 && y==y1 && z==z1 && w1.getName().equalsIgnoreCase(w)){
 
 					cs.set(s,null);
 					Main.main.saveConfig();
-					p.sendMessage("§7Vous avez delete la crate");
+					p.sendMessage("§7La crae à été supprimée !");
 				}
 			}
 		}
